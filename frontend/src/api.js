@@ -1,5 +1,7 @@
 const TOKEN_KEY = 'sc_token'
 
+const API_BASE = import.meta.env.VITE_API_URL || ''
+
 export function getToken() {
   return localStorage.getItem(TOKEN_KEY)
 }
@@ -14,7 +16,7 @@ async function request(path, { method = 'GET', body, auth = true } = {}) {
   if (body !== undefined) headers['Content-Type'] = 'application/json'
   const token = getToken()
   if (auth && token) headers.Authorization = `Bearer ${token}`
-  const res = await fetch(path, {
+  const res = await fetch(`${API_BASE}${path}`, {
     method,
     headers,
     body: body !== undefined ? JSON.stringify(body) : undefined,
@@ -43,4 +45,4 @@ export const api = {
   me: () => request('/api/auth/me'),
 }
 
-export const cvUrl = '/api/cv'
+export const cvUrl = `${API_BASE}/api/cv`
