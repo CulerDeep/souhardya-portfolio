@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../api.js'
+import { useLanguage } from '../LanguageContext.jsx'
 
 export default function Admin() {
   const [items, setItems] = useState([])
   const [error, setError] = useState('')
+  const { t } = useLanguage()
 
   async function load() {
     try {
@@ -28,12 +30,12 @@ export default function Admin() {
     <div className="wrap page">
       <div className="admin-head">
         <div>
-          <p className="kicker">Admin</p>
-          <h1>Studio</h1>
-          <p className="meta">Publish blogs, lessons, photographs, and videos. Nothing is persisted yet.</p>
+          <p className="kicker">{t('nav.studio')}</p>
+          <h1>{t('admin.studio_title')}</h1>
+          <p className="meta">{t('admin.studio_desc')}</p>
         </div>
         <Link className="btn" to="/admin/new">
-          New piece
+          {t('admin.new_piece')}
         </Link>
       </div>
       {error && <p className="error">{error}</p>}
@@ -41,9 +43,9 @@ export default function Admin() {
         <table className="table">
           <thead>
             <tr>
-              <th>Kind</th>
-              <th>Title</th>
-              <th>Status</th>
+              <th>{t('admin.kind')}</th>
+              <th>{t('admin.title')}</th>
+              <th>{t('admin.status')}</th>
               <th />
             </tr>
           </thead>
@@ -52,13 +54,13 @@ export default function Admin() {
               <tr key={item.id}>
                 <td>{item.kind}</td>
                 <td>{item.title}</td>
-                <td>{item.published ? 'Live' : 'Draft'}</td>
+                <td>{item.published ? t('admin.live') : t('admin.draft')}</td>
                 <td className="actions">
                   <Link className="btn ghost" to={`/admin/${item.id}`}>
-                    Edit
+                    {t('admin.edit')}
                   </Link>
                   <button className="btn danger" type="button" onClick={() => remove(item.id)}>
-                    Delete
+                    {t('admin.delete')}
                   </button>
                 </td>
               </tr>

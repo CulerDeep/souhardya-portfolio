@@ -1,55 +1,56 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api, cvUrl } from '../api.js'
+import { useLanguage } from '../LanguageContext.jsx'
 
 export default function Home() {
   const [profile, setProfile] = useState(null)
   const [posts, setPosts] = useState([])
+  const { t } = useLanguage()
 
   useEffect(() => {
     api.profile().then(setProfile).catch(() => {})
     api.list('blog').then(setPosts).catch(() => {})
   }, [])
 
-  if (!profile) return <div className="wrap page">Loading…</div>
+  if (!profile) return <div className="wrap page">{t('common.loading')}</div>
 
   return (
     <div className="wrap page">
       <section className="hero">
         <div>
-          <p className="kicker">{profile.location} · {profile.title}</p>
-          <h1>{profile.name}</h1>
-          <p className="lede">{profile.summary}</p>
-          <p className="lede">{profile.seeking}</p>
+          <p className="kicker">{t('home.location_title')}</p>
+          <h1>{t('common.brand_name')}</h1>
+          <p className="lede">{t('home.hero_summary')}</p>
+          <p className="lede">{t('home.hero_seeking')}</p>
           <div className="row">
             <a className="btn" href={cvUrl}>
-              Download CV
+              {t('home.download_cv')}
             </a>
             <Link className="btn ghost" to="/work">
-              See the work
+              {t('home.see_work')}
             </Link>
             <a className="btn ghost" href={`mailto:${profile.email}`}>
-              Email
+              {t('home.email')}
             </a>
           </div>
         </div>
         <aside className="hero-aside">
-          <p className="kicker" style={{ color: '#c4a574' }}>Now</p>
+          <p className="kicker" style={{ color: '#c4a574' }}>{t('home.now_kicker')}</p>
           <p>
-            <strong>PwC India</strong> — Full stack & API / cloud, Fortune 50 and private-equity products.
+            <strong>{t('home.now_company')}</strong> — {t('home.now_desc')}
           </p>
           <p>{profile.phone}</p>
           <p>{profile.email}</p>
-          <p>Languages: {profile.languages.join(' · ')}</p>
+          <p>{t('home.languages_label')}: {profile.languages.join(' · ')}</p>
         </aside>
       </section>
 
       <section className="section">
-        <p className="kicker">Selected craft</p>
-        <h2>React, Python, and the unglamorous middle</h2>
+        <p className="kicker">{t('home.selected_craft')}</p>
+        <h2>{t('home.craft_title')}</h2>
         <p className="lede">
-          Forecasting tools, bonus engines, ESG math, market-data ETL, and a chat interface on OpenAI —
-          shipped for PwC US and PE clients on Azure and AWS.
+          {t('home.craft_desc')}
         </p>
         <div className="skills" style={{ marginTop: '1.2rem' }}>
           {Object.entries(profile.skills).map(([group, items]) => (
@@ -68,10 +69,10 @@ export default function Home() {
       </section>
 
       <section className="section">
-        <p className="kicker">Latest writing</p>
-        <h2>From the journal</h2>
+        <p className="kicker">{t('home.latest_writing')}</p>
+        <h2>{t('home.from_journal')}</h2>
         {posts.length === 0 ? (
-          <p className="empty">No posts yet — the studio is empty until the first piece is published.</p>
+          <p className="empty">{t('home.no_posts')}</p>
         ) : (
           <div className="grid">
             {posts.slice(0, 3).map((post) => (

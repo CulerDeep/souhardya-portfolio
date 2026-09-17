@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { api } from '../api.js'
+import { useLanguage } from '../LanguageContext.jsx'
 
 const kindToPath = {
   blog: '/blog',
@@ -13,6 +14,7 @@ export default function Piece() {
   const { kind, id } = useParams()
   const [item, setItem] = useState(null)
   const [error, setError] = useState('')
+  const { t } = useLanguage()
 
   useEffect(() => {
     api.get(id).then(setItem).catch((e) => setError(e.message))
@@ -22,11 +24,11 @@ export default function Piece() {
     return (
       <div className="wrap page">
         <p className="error">{error}</p>
-        <Link to="/">Back home</Link>
+        <Link to="/">{t('common.back_home')}</Link>
       </div>
     )
   }
-  if (!item) return <div className="wrap page">Loading…</div>
+  if (!item) return <div className="wrap page">{t('common.loading')}</div>
 
   const back = kindToPath[kind] || '/'
 
@@ -34,7 +36,7 @@ export default function Piece() {
     <div className="wrap page">
       <article className="article">
         <Link className="meta" to={back}>
-          ← {kind}
+          {t('common.back')}
         </Link>
         <p className="kicker">{item.author_name}</p>
         <h1>{item.title}</h1>
@@ -49,9 +51,9 @@ export default function Piece() {
         )}
         {item.body && <div className="prose">{item.body}</div>}
         <div className="tags" style={{ marginTop: '1.2rem' }}>
-          {(item.tags || []).map((t) => (
-            <span className="tag" key={t}>
-              {t}
+          {(item.tags || []).map((tag) => (
+            <span className="tag" key={tag}>
+              {tag}
             </span>
           ))}
         </div>

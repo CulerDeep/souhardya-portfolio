@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext.jsx'
+import { useLanguage } from '../LanguageContext.jsx'
 
 export default function SignIn() {
   const { signin } = useAuth()
+  const { t } = useLanguage()
   const nav = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -27,21 +29,20 @@ export default function SignIn() {
   return (
     <div className="wrap page">
       <form className="auth-card" onSubmit={onSubmit}>
-        <p className="kicker">Account</p>
-        <h1>Sign in</h1>
-        <p className="meta">Visitors get a reader account. The studio login is admin-only.</p>
-        <label>Email</label>
+        <p className="kicker">{t('auth.signin_title')}</p>
+        <h1>{t('auth.signin_title')}</h1>
+        <label>{t('auth.email')}</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <label>Password</label>
+        <label>{t('auth.password')}</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         {error && <p className="error">{error}</p>}
         <div className="row">
           <button className="btn" disabled={busy} type="submit">
-            {busy ? 'Signing in…' : 'Sign in'}
+            {busy ? t('common.loading') : t('auth.signin_btn')}
           </button>
         </div>
         <p className="meta" style={{ marginTop: '1rem' }}>
-          New here? <Link to="/signup">Create an account</Link>
+          <Link to="/signup">{t('auth.no_account')}</Link>
         </p>
       </form>
     </div>

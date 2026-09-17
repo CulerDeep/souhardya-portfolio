@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../api.js'
+import { useLanguage } from '../LanguageContext.jsx'
 
 const empty = {
   kind: 'blog',
@@ -19,6 +20,7 @@ export default function Editor() {
   const [form, setForm] = useState(empty)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const { t } = useLanguage()
 
   useEffect(() => {
     if (!id) return
@@ -69,16 +71,16 @@ export default function Editor() {
   return (
     <div className="wrap page">
       <form className="editor" onSubmit={onSubmit}>
-        <p className="kicker">Studio</p>
-        <h1>{id ? 'Edit piece' : 'New piece'}</h1>
-        <label>Kind</label>
+        <p className="kicker">{t('nav.studio')}</p>
+        <h1>{id ? t('admin.edit_piece') : t('admin.new_piece')}</h1>
+        <label>{t('admin.kind')}</label>
         <select value={form.kind} onChange={(e) => set('kind', e.target.value)} disabled={Boolean(id)}>
           <option value="blog">Blog</option>
           <option value="lesson">Lesson</option>
           <option value="photo">Photograph</option>
           <option value="video">Video</option>
         </select>
-        <label>Title</label>
+        <label>{t('admin.title')}</label>
         <input value={form.title} onChange={(e) => set('title', e.target.value)} required />
         <label>Summary</label>
         <input value={form.summary} onChange={(e) => set('summary', e.target.value)} />
@@ -97,15 +99,15 @@ export default function Editor() {
             onChange={(e) => set('published', e.target.checked)}
             style={{ width: 'auto', marginRight: '0.45rem' }}
           />
-          Published
+          {t('admin.published')}
         </label>
         {error && <p className="error">{error}</p>}
         <div className="row">
           <button className="btn" disabled={busy} type="submit">
-            {busy ? 'Saving…' : 'Save'}
+            {busy ? t('common.loading') : t('admin.save')}
           </button>
           <button className="btn ghost" type="button" onClick={() => nav('/admin')}>
-            Cancel
+            {t('admin.cancel')}
           </button>
         </div>
       </form>

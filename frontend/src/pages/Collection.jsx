@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../api.js'
+import { useLanguage } from '../LanguageContext.jsx'
 
 const copy = {
-  blog: { path: '/blog', empty: 'No essays yet.' },
-  lesson: { path: '/lessons', empty: 'No lessons published yet.' },
-  photo: { path: '/photos', empty: 'The gallery is empty.' },
-  video: { path: '/videos', empty: 'No videos yet.' },
+  blog: { path: '/blog' },
+  lesson: { path: '/lessons' },
+  photo: { path: '/photos' },
+  video: { path: '/videos' },
 }
 
-export default function Collection({ kind, title, kicker }) {
+export default function Collection({ kind }) {
   const [items, setItems] = useState([])
   const [error, setError] = useState('')
+  const { t } = useLanguage()
 
   useEffect(() => {
     setError('')
@@ -19,15 +21,18 @@ export default function Collection({ kind, title, kicker }) {
   }, [kind])
 
   const conf = copy[kind]
+  const kickerText = t(`collection.${kind}_kicker`)
+  const titleText = t(`collection.${kind}_title`)
+  const emptyText = t(`collection.${kind}_empty`)
 
   if (kind === 'photo') {
     return (
       <div className="wrap page">
-        <p className="kicker">{kicker}</p>
-        <h1>{title}</h1>
+        <p className="kicker">{kickerText}</p>
+        <h1>{titleText}</h1>
         {error && <p className="error">{error}</p>}
         {items.length === 0 ? (
-          <p className="empty">{conf.empty}</p>
+          <p className="empty">{emptyText}</p>
         ) : (
           <div className="photo-grid">
             {items.map((item) => (
@@ -49,11 +54,11 @@ export default function Collection({ kind, title, kicker }) {
 
   return (
     <div className="wrap page">
-      <p className="kicker">{kicker}</p>
-      <h1>{title}</h1>
+      <p className="kicker">{kickerText}</p>
+      <h1>{titleText}</h1>
       {error && <p className="error">{error}</p>}
       {items.length === 0 ? (
-        <p className="empty">{conf.empty}</p>
+        <p className="empty">{emptyText}</p>
       ) : (
         <div className="grid">
           {items.map((item) => (

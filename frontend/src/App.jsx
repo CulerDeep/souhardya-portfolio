@@ -24,10 +24,10 @@ export default function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/work" element={<Work />} />
-        <Route path="/blog" element={<Collection kind="blog" title="Writing" kicker="Journal" />} />
-        <Route path="/lessons" element={<Collection kind="lesson" title="Lessons" kicker="Studio notes" />} />
-        <Route path="/photos" element={<Collection kind="photo" title="Photographs" kicker="Still frames" />} />
-        <Route path="/videos" element={<Collection kind="video" title="Videos" kicker="Moving image" />} />
+        <Route path="/blog" element={<Collection kind="blog" />} />
+        <Route path="/lessons" element={<Collection kind="lesson" />} />
+        <Route path="/photos" element={<Collection kind="photo" />} />
+        <Route path="/videos" element={<Collection kind="video" />} />
         <Route path="/:kind/:id" element={<Piece />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />

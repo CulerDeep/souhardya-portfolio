@@ -1,26 +1,27 @@
 import { useEffect, useState } from 'react'
 import { api, cvUrl } from '../api.js'
+import { useLanguage } from '../LanguageContext.jsx'
 
 export default function Work() {
   const [profile, setProfile] = useState(null)
+  const { t } = useLanguage()
 
   useEffect(() => {
     api.profile().then(setProfile).catch(() => {})
   }, [])
 
-  if (!profile) return <div className="wrap page">Loading…</div>
+  if (!profile) return <div className="wrap page">{t('common.loading')}</div>
 
   return (
     <div className="wrap page">
-      <p className="kicker">Experience</p>
-      <h1>Work</h1>
+      <p className="kicker">{t('work.kicker')}</p>
+      <h1>{t('work.title')}</h1>
       <p className="lede">
-        Full stack consulting since 2022 — React and Angular on the client, Flask/.NET APIs, SQL Server and
-        PostgreSQL underneath, Azure and AWS for the rest.
+        {t('work.lede')}
       </p>
       <div className="row">
         <a className="btn" href={cvUrl}>
-          Download CV
+          {t('work.download_cv')}
         </a>
       </div>
       <div className="timeline section">
@@ -45,8 +46,8 @@ export default function Work() {
         ))}
       </div>
       <section className="section">
-        <p className="kicker">School</p>
-        <h2>Education</h2>
+        <p className="kicker">{t('work.school_kicker')}</p>
+        <h2>{t('work.education_title')}</h2>
         <div className="grid">
           {profile.education.map((ed) => (
             <div className="card" key={ed.school}>
